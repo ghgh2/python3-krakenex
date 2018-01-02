@@ -132,6 +132,7 @@ class API(object):
             nonce = -1 if 'nonce' not in data.keys() else data['nonce'] # UGLY
             logger.debug('Posting query: nonce %d, attempt %d.', nonce, attempts)
             self.response = self.session.post(url, data = data, headers = headers)
+            print(self.response.text)
             status = self.response.status_code
             attempts += 1
                 
@@ -142,7 +143,7 @@ class API(object):
                 logger.debug('Sleeping for %d seconds', self.cooldown)
                 time.sleep(self.cooldown)
                 continue
-            elif "error" in self.response.json().keys() and self.response.json()["error"] == ['EService:Unavailable'] and attempts <= self.retries:
+            elif attempts <= self.retries and "error" in self.response.json().keys() and self.response.json()["error"] == ['EService:Unavailable']:
                 logger.debug('response error EService:Unavailable')
                 logger.debug('Sleeping for %d seconds', self.cooldown)
                 time.sleep(self.cooldown)
