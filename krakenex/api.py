@@ -142,6 +142,11 @@ class API(object):
                 logger.debug('Sleeping for %d seconds', self.cooldown)
                 time.sleep(self.cooldown)
                 continue
+            elif "error" in self.response.json().keys() and self.response.json()["error"] == ['EService:Unavailable'] and attempts <= self.retries:
+                logger.debug('response error EService:Unavailable')
+                logger.debug('Sleeping for %d seconds', self.cooldown)
+                time.sleep(self.cooldown)
+                continue
             else:
                 self.response.raise_for_status()
 
