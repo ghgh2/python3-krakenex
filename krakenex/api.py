@@ -132,7 +132,6 @@ class API(object):
             nonce = -1 if 'nonce' not in data.keys() else data['nonce'] # UGLY
             logger.debug('Posting query: nonce %d, attempt %d.', nonce, attempts)
             self.response = self.session.post(url, data = data, headers = headers)
-            print(self.response.text)
             status = self.response.status_code
             attempts += 1
                 
