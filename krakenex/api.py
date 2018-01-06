@@ -135,9 +135,7 @@ class API(object):
             status = self.response.status_code
             attempts += 1
                 
-            if status in self.successcodes:
-                break
-            elif status in self.retrycodes and attempts <= self.retries:
+            if status in self.retrycodes and attempts <= self.retries:
                 logger.debug('HTTP error %d', status)
                 logger.debug('Sleeping for %d seconds', self.cooldown)
                 time.sleep(self.cooldown)
@@ -147,6 +145,8 @@ class API(object):
                 logger.debug('Sleeping for %d seconds', self.cooldown)
                 time.sleep(self.cooldown)
                 continue
+            elif status in self.successcodes:
+                break
             else:
                 self.response.raise_for_status()
 
